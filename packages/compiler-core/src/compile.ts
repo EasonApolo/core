@@ -58,6 +58,7 @@ export function getBaseTransformPreset(
 
 // we name it `baseCompile` so that higher order compilers like
 // @vue/compiler-dom can export `compile` while re-exporting everything else.
+// 编译三件套：parse => transform => generate
 export function baseCompile(
   template: string | RootNode,
   options: CompilerOptions = {}
@@ -82,6 +83,7 @@ export function baseCompile(
     onError(createCompilerError(ErrorCodes.X_SCOPE_ID_NOT_SUPPORTED))
   }
 
+  // parse
   const ast = isString(template) ? baseParse(template, options) : template
   const [nodeTransforms, directiveTransforms] =
     getBaseTransformPreset(prefixIdentifiers)
@@ -93,6 +95,7 @@ export function baseCompile(
     }
   }
 
+  // transform
   transform(
     ast,
     extend({}, options, {
@@ -109,6 +112,7 @@ export function baseCompile(
     })
   )
 
+  // generate
   return generate(
     ast,
     extend({}, options, {

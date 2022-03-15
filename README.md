@@ -1,12 +1,25 @@
-# vuejs/core [![npm](https://img.shields.io/npm/v/vue.svg)](https://www.npmjs.com/package/vue) [![build status](https://github.com/vuejs/core/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/vuejs/core/actions/workflows/ci.yml)
+# vuejs/core  
 
 ## Getting Started
+
+### 写在前面
+
+学习vue3源码，会添加一些注释。
+
+### 启动
+
+安装pnpm（我用的官网的windows安装方式，会直接安装在当前目录下）
+
+```shell
+./pnpm install
+./pnpm run dev
+```
 
 Please follow the documentation at [vuejs.org](https://vuejs.org/)!
 
 ## Sponsors
 
-Vue.js is an MIT-licensed open source project with its ongoing development made possible entirely by the support of these awesome [backers](https://github.com/vuejs/core/blob/main/BACKERS.md). If you'd like to join them, please consider [ sponsor Vue's development](https://vuejs.org/sponsor/).
+Vue.js is an MIT-licensed open source project with its ongoing development made possible entirely by the support of these awesome [backers](https://github.com/vuejs/core/blob/main/BACKERS.md). If you'd like to join them, please consider [ sponsor Vue&#39;s development](https://vuejs.org/sponsor/).
 
 <p align="center">
   <a target="_blank" href="https://vuejs.org/sponsor/">
@@ -34,7 +47,7 @@ Please make sure to read the [Contributing Guide](https://github.com/vuejs/core/
 
 Thank you to all the people who already contributed to Vue!
 
-<a href="https://github.com/vuejs/core/graphs/contributors"><img src="https://opencollective.com/vuejs/contributors.svg?width=890" /></a>
+`<a href="https://github.com/vuejs/core/graphs/contributors"><img src="https://opencollective.com/vuejs/contributors.svg?width=890" />``</a>`
 
 ## License
 

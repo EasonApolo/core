@@ -89,6 +89,7 @@ export const enum TextModes {
   ATTRIBUTE_VALUE
 }
 
+// 描述编译状态，包括编译目标source、位置line/col/offset、选项options、flags。
 export interface ParserContext {
   options: MergedParserOptions
   readonly originalSource: string
@@ -105,10 +106,19 @@ export function baseParse(
   content: string,
   options: ParserOptions = {}
 ): RootNode {
+  // 初始化context
   const context = createParserContext(content, options)
+
+  // 取出起始位置。getCursor从context中复制出来位置信息（l1，c1，offset0）。
   const start = getCursor(context)
+
+  // 合并children，返回一个初始化的rootNode。
   return createRoot(
+
+    // 编译的主要部分
     parseChildren(context, TextModes.DATA, []),
+
+    // 再使用getCursor取出end，返回范围start end
     getSelection(context, start)
   )
 }
@@ -168,6 +178,7 @@ function parseChildren(
             node = parseComment(context)
           } else if (startsWith(s, '<!DOCTYPE')) {
             // Ignore DOCTYPE by a limitation.
+            // bogus：invalid。当注释解析了
             node = parseBogusComment(context)
           } else if (startsWith(s, '<![CDATA[')) {
             if (ns !== Namespaces.HTML) {
@@ -421,10 +432,14 @@ function parseElement(
   const wasInPre = context.inPre
   const wasInVPre = context.inVPre
   const parent = last(ancestors)
+
+  // 还是parseTag生成node
   const element = parseTag(context, TagType.Start, parent)
+
   const isPreBoundary = context.inPre && !wasInPre
   const isVPreBoundary = context.inVPre && !wasInVPre
 
+  // 如果是自闭合<xxx /> 或 空tag<img><br>，不需要再考虑children或endTag，直接返回
   if (element.isSelfClosing || context.options.isVoidTag(element.tag)) {
     // #4030 self-closing <pre> tag
     if (isPreBoundary) {
@@ -479,6 +494,7 @@ function parseElement(
     }
   }
 
+  // parseChildren和parseTag(End)让context的loc更新了。这里给element做同步。
   element.loc = getSelection(context, element.loc.start)
 
   if (isPreBoundary) {
@@ -542,6 +558,7 @@ function parseTag(
   }
 
   // Attributes.
+  // 看类型，prop有两种：attribute/directive，也被称为node
   let props = parseAttributes(context, type)
 
   // check v-pre
@@ -605,6 +622,7 @@ function parseTag(
     }
   }
 
+  // 检测是否为特殊标签，element/slot/component/template。
   let tagType = ElementTypes.ELEMENT
   if (!context.inVPre) {
     if (tag === 'slot') {
